@@ -1,4 +1,4 @@
-image: node:16  # Используем образ Node.js
+image: node:18  # Обновляем образ до Node.js 18
 
 stages:
   - build
@@ -11,18 +11,18 @@ cache:
 build_job:
   stage: build
   script:
-    - npm install --legacy-peer-deps  # Добавляем флаг --legacy-peer-deps
-    - npm run build
+    - npm install --legacy-peer-deps  # Используем флаг --legacy-peer-deps для решения конфликтов зависимостей
+    - npm run build  # Собираем проект
   artifacts:
     paths:
-      - dist/  # Путь к собранному коду (для Vite)
+      - out/  # Next.js создает статические файлы в папке "out"
     expire_in: 1 day
 
 pages:
   stage: deploy
   script:
     - mkdir public  # Создаем папку public для GitLab Pages
-    - cp -r dist/* public/  # Копируем собранный код в public
+    - cp -r out/* public/  # Копируем содержимое из "out" в "public"
   artifacts:
     paths:
       - public  # Указываем GitLab Pages на папку public
