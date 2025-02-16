@@ -1,0 +1,30 @@
+image: node:16  # Используем образ Node.js
+
+stages:
+  - build
+  - deploy
+
+cache:
+  paths:
+    - node_modules/
+
+build_job:
+  stage: build
+  script:
+    - npm install  # Установка зависимостей
+    - npm run build  # Сборка production-версии
+  artifacts:
+    paths:
+      - dist/  # Путь к собранному коду (для Vite)
+    expire_in: 1 day
+
+pages:
+  stage: deploy
+  script:
+    - mkdir public  # Создаем папку public для GitLab Pages
+    - cp -r dist/* public/  # Копируем собранный код в public
+  artifacts:
+    paths:
+      - public  # Указываем GitLab Pages на папку public
+  only:
+    - main  # Деплой только с ветки main
