@@ -11,8 +11,8 @@ cache:
 build_job:
   stage: build
   script:
-    - npm install  # Установка зависимостей
-    - npm run build  # Сборка production-версии
+    - npm install --legacy-peer-deps  # Добавляем флаг --legacy-peer-deps
+    - npm run build
   artifacts:
     paths:
       - dist/  # Путь к собранному коду (для Vite)
